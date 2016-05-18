@@ -25,11 +25,18 @@ class TokenTree:
 	def __makeTree__(self):
 
 
+		sentence_expression_flag = 0
+		if self.tokens[0] == '$':
+			self.tokens.pop(0)
+			sentence_expression_flag = 1
+			
+
+		return_list = []
 		##Pre-expression tokens treatment
 		print 'tokens = ' + str(self.tokens)
 		final = []
 		if self.tokens[0] == 'if':
-			return_list =  self.__makeTreeIf__(final)
+			return_list =  self.__makeTreeIf__(final,sentence_expression_flag)
 		elif self.tokens[0] == 'for':
 			return_list = self.__makeTreeFor__(final)
 		elif self.tokens[0] == '!':
@@ -49,7 +56,9 @@ class TokenTree:
 			return_list = 'false'
 		elif unicode(self.tokens[0]).isnumeric():
 			temp = self.tokens.pop(0)
-			return_list = temp			
+			return_list = temp
+		elif self.tokens[0] in self.operators:
+			pass		
 		else:
 			raise Exception('Mal Tipado')
 		print 'final = ' + str(return_list)
@@ -58,19 +67,21 @@ class TokenTree:
 
 
 		##Post-expression tokens treatment
-		try:
-			if self.tokens[0] in self.operators:
-				temp = self.tokens.pop(0)
-				return [return_list,temp,(self.__makeTree__())]
+		if sentence_expression_flag == 1: 
+			try:
+				if self.tokens[0] in self.operators:
+					temp = self.tokens.pop(0)
+					return [return_list,temp,(self.__makeTree__())]
 
-			else: 
+				else: 
+					return return_list
+			except IndexError:
 				return return_list
-		except IndexError:
-			return return_list
+		return return_list
 		
 
 
-	def __makeTreeIf__(self,final):
+	def __makeTreeIf__(self,final,sentence_expression_flag):
 		final.append('if')
 		self.tokens.pop(0)
 		final.append(self.__makeTree__())
@@ -148,5 +159,6 @@ class TokenTree:
 
 		
 		
+
 
 
