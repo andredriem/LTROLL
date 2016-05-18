@@ -58,7 +58,9 @@ class TokenTree:
 			temp = self.tokens.pop(0)
 			return_list = temp
 		elif self.tokens[0] in self.operators:
-			pass		
+			pass	
+		elif self.tokens[0] == '$':
+			return_list = self.__makeTree__()	
 		else:
 			raise Exception('Mal Tipado')
 		print 'final = ' + str(return_list)

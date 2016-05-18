@@ -60,13 +60,8 @@ class SmallStep:
 
 
 if __name__ == '__main__':
-	tree = TokenTree('if if true then true else false then if true then false else true else true').tree
+	tree = TokenTree('$ if true then false else true ; $ $ 1 + 2 + $ 4 + 3').tree
 	test = SmallStep(tree)
-	print 'new'
-	test.makeStep()
-	#test.makeStep()
-	#test.makeStep()
-	
-	print test.tree
+
 
 
