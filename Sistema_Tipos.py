@@ -41,7 +41,7 @@ def is_a_number(var):
 # Função is_a_bool(var)=> bool
 # onde var é uma variavel 
 #======================================
-def is_a_bool(e):
+def is_a_bool(var):
     try:
         if var == bool(var):
             return True
