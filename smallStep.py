@@ -315,7 +315,7 @@ class SmallStep:
 
 
 if __name__ == '__main__':
-	tree = TokenTree('notnot $ true and false').tree
+	tree = TokenTree('$ $ $ $ 3 := 1 : $ 5 := 2 : $ 0 := 3 : for 1 until ! 1 do $ $ ! 2 - ! 3 := 3').tree
 	print 'tree: ' + str(tree)
 	test = SmallStep(tree)
 	raw_input(' ')
