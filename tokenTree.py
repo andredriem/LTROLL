@@ -42,6 +42,9 @@ class TokenTree:
 		elif self.tokens[0] == '!':
 			self.tokens.pop(0)
 			return_list = ['!', self.__makeTree__()]
+		elif self.tokens[0] == 'notnot':
+			self.tokens.pop(0)
+			return_list = ['notnot', self.__makeTree__()]
 		elif self.tokens[0] == 'fn':
 			return_list = self.__makeTreeFn__(final)
 		elif self.tokens[0] == '!':
@@ -54,6 +57,9 @@ class TokenTree:
 		elif self.tokens[0] == 'false':
 			self.tokens.pop(0)
 			return_list = 'false'
+		elif self.tokens[0] == 'x':
+			self.tokens.pop(0)
+			return_list = 'x'
 		elif unicode(self.tokens[0]).isnumeric():
 			temp = self.tokens.pop(0)
 			return_list = temp

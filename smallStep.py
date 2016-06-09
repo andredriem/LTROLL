@@ -77,10 +77,17 @@ class SmallStep:
 		elif optype == 'e-doispontos2':
 			self.__edoispontos2__()
 		elif optype == 'e-pontoevirgula1':
-			self.
+			self.__epontoevirgula1__()
 		elif optype == 'e-pontoevirgula2':
-
-
+			self.__epontoevirgula2__()
+		elif optype == 'e-fn1':
+			self.__efn1__()
+		elif optype == 'e-fn2':
+			self.__efn2__()
+		elif optype == 'e-notnot1':
+			self.__enotnot1__()
+		elif optype == 'e-notnot2':
+			self.__enotnot2__()
 
 		print optype
 
@@ -143,6 +150,10 @@ class SmallStep:
 			return 'e-pontoevirgula1'
 		elif self.tree[1] == ';':
 			return 'e-pontoevirgula2'
+		elif self.tree[0] == 'notnot' and type(self.tree[1]) == type([]):
+			return 'e-notnot1'
+		elif self.tree[0] == 'notnot':
+			return 'e-notnot2'
 		else:
 			return 'error'
 
@@ -236,6 +247,7 @@ class SmallStep:
 				self.tree = self.tree[5]
 			else:
 				self.tree[3] = [self.tree[3],'+','1']
+				self.tree = [copy.deepcopy(self.tree[5]),':',self.tree]
 		else:
 			raise Exception("Mal Tipado")
 	def __eassing3__(self):
@@ -269,8 +281,33 @@ class SmallStep:
 		newStep.makeStep()
 		self.tree[2] = newStep.tree
 	def __epontoevirgula2__(self):
-		self.tree = self.tree[0]	
+		self.tree = self.tree[0]
+	def __efn1__(self):
+		newStep = SmallStep(self.tree[1])
+		newStep.makeStep()
+		self.tree[1] = newStep.tree
+	def __efn2__(self):	
+		self.__replaceInTree__(self.tree[1],self.tree[5])
+		self.tree = self.tree[5]
+	def __enotnot1__(self):
+		newStep = SmallStep(self.tree[1])
+		newStep.makeStep()
+		self.tree[1] = newStep.tree
+	def __enotnot2__(self):
+		if self.tree[1] == 'true' or self.tree[1] == 'false':
+			self.tree = str(not bool(self.tree[1])).lower() 
 	
+
+	def __replaceInTree__(self,element,atree):
+		for node in atree:
+			
+			if type(node) == type([]):
+				self.__replaceInTree__(element,node)
+			elif 'x' in atree:
+				loc = atree.index('x')
+				atree[loc] = copy.copy(element)
+		
+		pass
 
 
 
@@ -278,7 +315,7 @@ class SmallStep:
 
 
 if __name__ == '__main__':
-	tree = TokenTree('$ $ ! $ 1 - 1 - 5 ; $ $ 1 - 4 := $ 1 - 1').tree
+	tree = TokenTree('notnot $ true and false').tree
 	print 'tree: ' + str(tree)
 	test = SmallStep(tree)
 	raw_input(' ')
