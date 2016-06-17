@@ -11,7 +11,7 @@ import copy
 #Creates Program Tree
 class TokenTree:
 
-	operators = ('+','-','<','>','<=','>=','=','=/=','or','and','not not', ';', ':', ':=')
+	operators = ('+','-','<','>','<=','>=','=','=/=','or','and','not not', ';', ':', ':=', 'in')
 	types = ('nat','bool','unit')
 
 	def __init__(self,program_string):
@@ -68,7 +68,7 @@ class TokenTree:
 		elif self.tokens[0] == '$':
 			return_list = self.__makeTree__()	
 		else:
-			raise Exception('Mal Tipado')
+			return_list = self.tokens.pop(0)
 		#print 'final = ' + str(return_list)
 
 
@@ -130,7 +130,7 @@ class TokenTree:
 		self.tokens.pop(0)
 		#print 'entrei'
 
-		final.append(self.__makeTree__())
+		final.append(self.tokens.pop(0))
 
 		
 
