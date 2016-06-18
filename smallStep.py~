@@ -16,7 +16,7 @@ import copy
 
 class SmallStep:
 
-	operators = ('+','-','<','>','<=','>=','=','=/=','or','and','not not')
+	operators = ('+','-','<','>','<=','>=','=','=/=','or','and')
 	bools = ('true','false')
 	types = ('nat','bool','unit')
 	memory = {}
@@ -62,6 +62,15 @@ class SmallStep:
 		elif optype == 'e-for3':
 			optype = 'e-for3 or e-for4'
 			self.__efor3__()
+                elif optype == 'e-in1':
+                        optype = 'e-in1'
+                        self.__ein1__()
+                elif optype == 'e-in2':
+                        optype = 'e-in2'
+                        self.__ein2__()
+                elif optype == 'e-in3':
+                        optype = 'e-in3'
+                        self.__ein3__()
 		elif optype == 'e-assing1':
 			self.__eassing1__()
 		elif optype == 'e-assing2':
@@ -80,10 +89,6 @@ class SmallStep:
 			self.__epontoevirgula1__()
 		elif optype == 'e-pontoevirgula2':
 			self.__epontoevirgula2__()
-		elif optype == 'e-fn1':
-			self.__efn1__()
-		elif optype == 'e-fn2':
-			self.__efn2__()
 		elif optype == 'e-notnot1':
 			self.__enotnot1__()
 		elif optype == 'e-notnot2':
@@ -93,7 +98,6 @@ class SmallStep:
 
 
 	def __detectStepType__(self):
-		print self.tree
 		if len(self.tree) == 3 and type(self.tree[0]) == type([]) and self.tree[1] in self.operators:
 			return 'e-op1'
 		elif len(self.tree) == 3 and type(self.tree[2]) == type([]) and self.tree[1] in self.operators:
@@ -118,6 +122,12 @@ class SmallStep:
 			return 'e-or'
 		elif len(self.tree) == 3 and self.tree[1] == 'and':
 			return 'e-and'
+		elif len(self.tree) == 3 and self.tree[1] == 'in' and type(self.tree[0]) == type([]) and self.tree[0][0] != 'fn':
+			return 'e-in1'
+		elif len(self.tree) == 3 and self.tree[1] == 'in' and type(self.tree[2]) == type([]) and self.tree[2][0] != 'fn':
+			return 'e-in2'
+		elif len(self.tree) == 3 and self.tree[1] == 'in':
+			return 'e-in3'
 		elif self.tree[0] == 'if' and type(self.tree[1]) == type([]):
 			return 'e-if1'
 		elif self.tree[0] == 'if':
@@ -128,15 +138,11 @@ class SmallStep:
 			return 'e-for2'
 		elif self.tree[0] == 'for':
 			return 'e-for3' 
-		elif self.tree[0] == 'fn' and type(self.tree[1]) == type([]):
-			return 'e-fn1' #todo
-		elif self.tree[0] == 'fn':
-			return 'e-fn2' #todo
 		elif self.tree[0] == '!' and type(self.tree[1]) == type([]):
 			return 'e-derref2' 
 		elif self.tree[0] == '!':
 			return 'e-derref1' 
-		elif self.tree[1] == ':=' and type(self.tree[0]) == type([]):
+		elif self.tree[1] == ':=' and type(self.tree[0]) == type([]) and self.tree[0][0] != 'fn':
 			return 'e-assing3'
 		elif self.tree[1] == ':=' and type(self.tree[2]) == type([]):
 			return 'e-assing2'
@@ -263,7 +269,7 @@ class SmallStep:
 		self.tree = 'skip'
 	def __ederref1__(self):
 		try:
-			self.tree = self.memory[self.tree[1]]
+			self.tree = compy.deepcopy(self.memory[self.tree[1]])
 		except:
 			raise Exception("Variavel nao esta na memoria")
 	def __ederref2__(self):
@@ -282,13 +288,17 @@ class SmallStep:
 		self.tree[2] = newStep.tree
 	def __epontoevirgula2__(self):
 		self.tree = self.tree[0]
-	def __efn1__(self):
-		newStep = SmallStep(self.tree[1])
-		newStep.makeStep()
-		self.tree[1] = newStep.tree
-	def __efn2__(self):	
-		self.__replaceInTree__(self.tree[1],self.tree[5])
-		self.tree = self.tree[5]
+        def __ein1__(self):
+                self.__eop1__() 
+                pass
+        def __ein2__(self):
+                self.__eop2__() 
+                pass
+        def __ein3__(self):
+                print 'here'
+                print self.tree[0][5]
+                self.__replaceInTree__(self.tree[0][1],self.tree[2],self.tree[0][5])
+                self.tree = self.tree[0][5]
 	def __enotnot1__(self):
 		newStep = SmallStep(self.tree[1])
 		newStep.makeStep()
@@ -298,13 +308,13 @@ class SmallStep:
 			self.tree = str(not bool(self.tree[1])).lower() 
 	
 
-	def __replaceInTree__(self,element,atree):
+	def __replaceInTree__(self,variable,element,atree):
 		for node in atree:
 			
 			if type(node) == type([]):
-				self.__replaceInTree__(element,node)
-			elif 'x' in atree:
-				loc = atree.index('x')
+				self.__replaceInTree__(variable,element,node)
+			elif variable in atree:
+				loc = atree.index(variable)
 				atree[loc] = copy.copy(element)
 		
 		pass
@@ -315,17 +325,24 @@ class SmallStep:
 
 
 if __name__ == '__main__':
-	tree = TokenTree('notnot $ true and false').tree
+	tree = TokenTree('$ $ fn y / nat -> $ y - 4 := var : $ ! var in 3').tree
 	print 'tree: ' + str(tree)
 	test = SmallStep(tree)
 	raw_input(' ')
 	while True:
 		test.makeStep()
+                print '-----------------------------'
 		print test.tree
 		print 'memoria: ' + str(test.memory)
 		raw_input(' ')
 		if type(test.tree) == type(' '):
 			exit()
+
+
+#TESTE CHAMAR FN DENTRO DE FN
+# $ fn y / nat -> $ y in 3 in fn x / nat -> $ x + x
+
+
 
 
 

@@ -51,6 +51,8 @@ class TokenTree:
 			return_list = ['!', self.__makeTreeTypeGeneral__(final)]
 		elif self.tokens[0] in self.types:
 			return_list = self.__makeTreeTypeGeneral__(final)
+		elif self.tokens[0] == 'ref':
+			return_list = [self.tokens.pop(0),self.__makeTreeTypeGeneral__(final)]                
 		elif self.tokens[0] == 'true':
 			self.tokens.pop(0)
 			return_list = 'true'

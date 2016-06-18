@@ -1,0 +1,14 @@
+( ( ( ( ( fn y / nat -> ( ( ( ( ( 0 := result ) : for 1 until y do ( ( ! result - y ) := result ) ) : 3 ) : 4 ) : ! result ) := quadrado
+
+
+
+
+
+
+
+
+
+
+
+
+: ( ! quadrado in ( ! quadrado in 4 ) : 3 ) : 4 ) : 5 ) : 6 )

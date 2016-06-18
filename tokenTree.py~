@@ -11,7 +11,7 @@ import copy
 #Creates Program Tree
 class TokenTree:
 
-	operators = ('+','-','<','>','<=','>=','=','=/=','or','and','not not', ';', ':', ':=')
+	operators = ('+','-','<','>','<=','>=','=','=/=','or','and','not not', ';', ':', ':=', 'in')
 	types = ('nat','bool','unit')
 
 	def __init__(self,program_string):
@@ -42,12 +42,17 @@ class TokenTree:
 		elif self.tokens[0] == '!':
 			self.tokens.pop(0)
 			return_list = ['!', self.__makeTree__()]
+		elif self.tokens[0] == 'notnot':
+			self.tokens.pop(0)
+			return_list = ['notnot', self.__makeTree__()]
 		elif self.tokens[0] == 'fn':
 			return_list = self.__makeTreeFn__(final)
 		elif self.tokens[0] == '!':
 			return_list = ['!', self.__makeTreeTypeGeneral__(final)]
 		elif self.tokens[0] in self.types:
 			return_list = self.__makeTreeTypeGeneral__(final)
+		elif self.tokens[0] == 'ref':
+			return_list = [self.tokens.pop(0),self.__makeTreeTypeGeneral__(final)]                
 		elif self.tokens[0] == 'true':
 			self.tokens.pop(0)
 			return_list = 'true'
@@ -65,7 +70,7 @@ class TokenTree:
 		elif self.tokens[0] == '$':
 			return_list = self.__makeTree__()	
 		else:
-			raise Exception('Mal Tipado')
+			return_list = self.tokens.pop(0)
 		#print 'final = ' + str(return_list)
 
 
@@ -127,7 +132,7 @@ class TokenTree:
 		self.tokens.pop(0)
 		#print 'entrei'
 
-		final.append(self.__makeTree__())
+		final.append(self.tokens.pop(0))
 
 		
 

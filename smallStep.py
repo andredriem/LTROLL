@@ -16,7 +16,7 @@ import copy
 
 class SmallStep:
 
-	operators = ('+','-','<','>','<=','>=','=','=/=','or','and','not not')
+	operators = ('+','-','<','>','<=','>=','=','=/=','or','and')
 	bools = ('true','false')
 	types = ('nat','bool','unit')
 	memory = {}
@@ -269,7 +269,7 @@ class SmallStep:
 		self.tree = 'skip'
 	def __ederref1__(self):
 		try:
-			self.tree = self.memory[self.tree[1]]
+			self.tree = copy.deepcopy(self.memory[self.tree[1]])
 		except:
 			raise Exception("Variavel nao esta na memoria")
 	def __ederref2__(self):
@@ -295,6 +295,8 @@ class SmallStep:
                 self.__eop2__() 
                 pass
         def __ein3__(self):
+                print 'here'
+                print self.tree[0][5]
                 self.__replaceInTree__(self.tree[0][1],self.tree[2],self.tree[0][5])
                 self.tree = self.tree[0][5]
 	def __enotnot1__(self):
@@ -310,7 +312,7 @@ class SmallStep:
 		for node in atree:
 			
 			if type(node) == type([]):
-				self.__replaceInTree__(element,node)
+				self.__replaceInTree__(variable,element,node)
 			elif variable in atree:
 				loc = atree.index(variable)
 				atree[loc] = copy.copy(element)
