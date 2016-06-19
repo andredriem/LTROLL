@@ -1,1 +1,1 @@
-( ( ( ( ( ( ( fn x / nat --> bool -> ( x in 3 ) := fn1 : ( ! fn1 in fn x / nat -> ( x =/= 3 ) ) ) : 3 ) : 4 ) : 5 ) : 6 ) : 7 )
+( ( ( ( ( ( ( fn x / nat --> bool -> ( x in 3 ) := rec : ( ! rec in fn x / nat -> ( x =/= 3 ) ) )

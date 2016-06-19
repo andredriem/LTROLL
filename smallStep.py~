@@ -321,7 +321,7 @@ class SmallStep:
 		self.tree[1] = newStep.tree
 	def __enotnot2__(self):
 		if self.tree[1] == 'true':
-			self.tree = 'false':
+			self.tree = 'false'
                 else:
                         self.tree = 'true'
 	

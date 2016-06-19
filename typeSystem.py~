@@ -123,12 +123,17 @@ class TypeSystem:
                 type_variable = self.tree[3]
                 new_variables = copy.deepcopy(self.variables)
                 new_variables[self.tree[1]] = type_variable
+                print '\n\n'
+                print new_variables
                 type_expression = TypeSystem(self.tree[5],new_variables).checkType()
 
                 return [type_variable,'-->',type_expression]
         def __tin__(self):
                 type_function = TypeSystem(self.tree[0],self.variables).checkType()
                 type_variable = TypeSystem(self.tree[2],self.variables).checkType()
+                print '------------'
+                print type_function
+                print type_variable
                 if type_function[0] == type_variable:
                         return type_function[2]
                 else:
@@ -215,8 +220,8 @@ class TypeSystem:
                 temp = TypeSystem(self.tree[0],self.variables)
                 type_first = temp.checkType()
                 type_second = TypeSystem(self.tree[2],temp.variables).checkType()
-                print type_first
-                print type_second
+                #print type_first
+                #print type_second
                 if type_first == ['bool'] and type_second == ['bool']:
                         return ['bool']
                 else:

@@ -311,8 +311,6 @@ class SmallStep:
                 self.__eop2__() 
                 pass
         def __ein3__(self):
-                print 'here'
-                print self.tree[0][5]
                 self.__replaceInTree__(self.tree[0][1],self.tree[2],self.tree[0][5])
                 self.tree = self.tree[0][5]
 	def __enotnot1__(self):

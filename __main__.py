@@ -29,10 +29,13 @@ if __name__ == '__main__':
         program = f.read()
         program = programPreParsing(program)
         tree = TokenTree(program).tree
+        print 'foi montada a arvore:'
         print tree
+        print '----------------'
         dic = {}
         dic['result'] = ['ref',['nat']]
         dic['quadrado'] = ['ref',[['nat'],'-->',['nat']]]
+        dic['rec'] = ['ref',[['nat'],'-->',['nat']]]
         dic['fn1'] = ['ref',[  [['nat'],'-->',['bool']] , '-->' , ['bool'] ]]
         dic['x1'] = ['ref',['nat']]
         dic['x2'] = ['ref',['nat']]
@@ -40,11 +43,11 @@ if __name__ == '__main__':
         dic['bool1'] = ['ref',['bool']]
         dic['bool2'] = ['ref',['bool']]
 
-
+        print 'tipo da funcao:'
         final_type = TypeSystem(tree,dic).checkType()
         print final_type
 
-
+        print '---------------'
         print '\n\n'
         print 'agora o programa ira comecar a realizar o small-step'
 
