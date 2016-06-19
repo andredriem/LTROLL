@@ -29,12 +29,16 @@ if __name__ == '__main__':
         program = f.read()
         program = programPreParsing(program)
         tree = TokenTree(program).tree
+        print tree
         dic = {}
         dic['result'] = ['ref',['nat']]
         dic['quadrado'] = ['ref',[['nat'],'-->',['nat']]]
+        dic['fn1'] = ['ref',[  [['nat'],'-->',['bool']] , '-->' , ['bool'] ]]
         dic['x1'] = ['ref',['nat']]
         dic['x2'] = ['ref',['nat']]
         dic['x3'] = ['ref',['nat']]
+        dic['bool1'] = ['ref',['bool']]
+        dic['bool2'] = ['ref',['bool']]
 
 
         final_type = TypeSystem(tree,dic).checkType()

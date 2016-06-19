@@ -60,6 +60,10 @@ class TypeSystem:
                         return self.__tfor__()
                 elif rule == 't-if':
                         return self.__tif__()
+                elif rule == 't-boolbool':
+                        return self.__tboolbool__()
+                elif rule == 't-notnot':
+                        return self.__tnotnot__()
 
 
 
@@ -82,12 +86,16 @@ class TypeSystem:
                         return 't-assing'
                 elif self.tree[0] == '!':
                         return 't-derref'
+                elif self.tree[0] == 'notnot':
+                        return 't-notnot'
                 elif self.tree[1] == ';':
                         return 't-pontoevirgula'
                 elif self.tree[1] == ':':
                         return 't-doispontos'
                 elif self.tree[1] in self.nat_or_bool_to_bool_op:
                         return 't-genbool'
+                elif self.tree[1] in self.bool_to_bool_op:
+                        return 't-boolbool'
                 elif self.tree[1] in self.nat_to_bool_op:
                         return 't-natbool'
                 elif self.tree[1] in self.nat_to_nat_op:
@@ -203,6 +211,22 @@ class TypeSystem:
                         return type_third
                 else:
                         raise TypeError("Comparacao do for deve ser feita com naturais")
+        def __tboolbool__(self):
+                temp = TypeSystem(self.tree[0],self.variables)
+                type_first = temp.checkType()
+                type_second = TypeSystem(self.tree[2],temp.variables).checkType()
+                #print type_first
+                #print type_second
+                if type_first == ['bool'] and type_second == ['bool']:
+                        return ['bool']
+                else:
+                        raise TypeError("Operacao so aceita booleanos") 
+        def __tnotnot__(self):
+                type_first = TypeSystem(self.tree[1],self.variables).checkType()
+                if type_first == ['bool']:
+                        return ['bool']
+                else:
+                        raise TypeError("Operacao notnot so aceita booleanos") 
                                
                 
 

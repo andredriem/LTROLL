@@ -218,12 +218,28 @@ class SmallStep:
 			raise Exception("Mal Tipado")
 	def __eor__(self):
 		if (self.tree[0] in self.bools) and (self.tree[2] in self.bools):
-			self.tree = str((self.tree[0]) and bool(self.tree[2])).lower()
+                        if self.tree[0] == 'true':
+                                bool1 = True
+                        else:
+                                bool1 = False
+                        if self.tree[2] == 'true':
+                                bool2 = True
+                        else:
+                                bool2 = False
+			self.tree = str(bool1 and bool2).lower()
 		else:
 			raise Exception("Mal Tipado")				
 	def __eand__(self):
 		if (self.tree[0] in self.bools) and (self.tree[2] in self.bools):
-			self.tree = str((self.tree[0]) or bool(self.tree[2])).lower()
+                        if self.tree[0] == 'true':
+                                bool1 = True
+                        else:
+                                bool1 = False
+                        if self.tree[2] == 'true':
+                                bool2 = True
+                        else:
+                                bool2 = False
+			self.tree = str(bool1 or bool2).lower()
 		else:
 			raise Exception("Mal Tipado")
 	def __eif1__(self):
@@ -269,7 +285,7 @@ class SmallStep:
 		self.tree = 'skip'
 	def __ederref1__(self):
 		try:
-			self.tree = compy.deepcopy(self.memory[self.tree[1]])
+			self.tree = copy.deepcopy(self.memory[self.tree[1]])
 		except:
 			raise Exception("Variavel nao esta na memoria")
 	def __ederref2__(self):
@@ -304,8 +320,10 @@ class SmallStep:
 		newStep.makeStep()
 		self.tree[1] = newStep.tree
 	def __enotnot2__(self):
-		if self.tree[1] == 'true' or self.tree[1] == 'false':
-			self.tree = str(not bool(self.tree[1])).lower() 
+		if self.tree[1] == 'true':
+			self.tree = 'false':
+                else:
+                        self.tree = 'true'
 	
 
 	def __replaceInTree__(self,variable,element,atree):
