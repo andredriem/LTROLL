@@ -1,1 +1,1 @@
-( ( fn x / nat -> if ( x =/= 0 ) then ( ! rec in ( x - 1 ) ) else 0 := rec : ( ! rec in 4 ) 
+pizza nat # ( ( fn x / nat -> if ( x =/= 0 ) then ( ! rec in ( x + 1 ) ) else 0 ) := rec : ( ! rec in 4 ) 

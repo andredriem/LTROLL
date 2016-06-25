@@ -15,9 +15,16 @@ class TokenTree:
 	types = ('nat','bool','unit')
 
 	def __init__(self,program_string):
-		self.program_string = program_string
-		self.tokens = self.program_string.split(' ')
-		self.tree = self.__makeTree__()
+                
+                try:
+		        self.variables,self.program_string = self.program_string.split('#')
+		        self.tokens = self.program_string.split(' ')
+		        self.tree = self.__makeTree__()
+                        self.tree = [TokenTree(self.variables).tree,self.tree]
+                except:
+		        self.program_string = program_string
+		        self.tokens = self.program_string.split(' ')
+		        self.tree = self.__makeTree__()
 		#print self.tree
 		
 

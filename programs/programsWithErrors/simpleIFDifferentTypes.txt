@@ -1,1 +1,1 @@
-( skip : if true then true else false ) 
+( skip : if true then 1 else false ) 

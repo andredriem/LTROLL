@@ -93,6 +93,8 @@ class SmallStep:
 			self.__enotnot1__()
 		elif optype == 'e-notnot2':
 			self.__enotnot2__()
+                elif optype == 'e-#':
+                        self.__edeclaration__()
 
 		print optype
 
@@ -104,6 +106,8 @@ class SmallStep:
 			return 'e-op2'
 		elif len(self.tree) == 3 and self.tree[1] == '+':
 			return 'e-plus'
+		elif len(self.tree) == 3 and self.tree[1] == '#':
+			return 'e-#'
 		elif len(self.tree) == 3 and self.tree[1] == '-':
 			return 'e-minus'
 		elif len(self.tree) == 3 and self.tree[1] == '=':
@@ -178,12 +182,12 @@ class SmallStep:
 			if int(self.tree) <= 0:
 				self.tree = '0'
 		else:
-			raise Exception("Mal Tipado")  
+			raise Exception("Error")  
 	def __eminus__(self):
 		if self.tree[0].isdigit() and self.tree[2].isdigit():
 			self.tree = str(int(self.tree[0]) + int(self.tree[2]))
 		else:
-			raise Exception("Mal Tipado")
+			raise Exception("Error")
 
 	def __eequal__(self):
 		if self.tree[0] == self.tree[2]:
@@ -200,22 +204,22 @@ class SmallStep:
 		if self.tree[0].isdigit() and self.tree[2].isdigit():
 			self.tree = str(int(self.tree[0]) > int(self.tree[2])).lower()
 		else:
-			raise Exception("Mal Tipado")
+			raise Exception("Error")
 	def __egreat__(self):
 		if self.tree[0].isdigit() and self.tree[2].isdigit():
 			self.tree = str(int(self.tree[0]) < int(self.tree[2])).lower()
 		else:
-			raise Exception("Mal Tipado")
+			raise Exception("Error")
 	def __elessequal__(self):
 		if self.tree[0].isdigit() and self.tree[2].isdigit():
 			self.tree = str(int(self.tree[0]) >= int(self.tree[2])).lower()
 		else:
-			raise Exception("Mal Tipado")
+			raise Exception("Error")
 	def __egreatequal__(self):
 		if self.tree[0].isdigit() and self.tree[2].isdigit():
 			self.tree = str(int(self.tree[0]) <= int(self.tree[2])).lower()
 		else:
-			raise Exception("Mal Tipado")
+			raise Exception("Error")
 	def __eor__(self):
 		if (self.tree[0] in self.bools) and (self.tree[2] in self.bools):
                         if self.tree[0] == 'true':
@@ -228,7 +232,7 @@ class SmallStep:
                                 bool2 = False
 			self.tree = str(bool1 and bool2).lower()
 		else:
-			raise Exception("Mal Tipado")				
+			raise Exception("Error")				
 	def __eand__(self):
 		if (self.tree[0] in self.bools) and (self.tree[2] in self.bools):
                         if self.tree[0] == 'true':
@@ -241,7 +245,7 @@ class SmallStep:
                                 bool2 = False
 			self.tree = str(bool1 or bool2).lower()
 		else:
-			raise Exception("Mal Tipado")
+			raise Exception("Error")
 	def __eif1__(self):
 		newStep = SmallStep(self.tree[1])
 		newStep.makeStep()
@@ -253,7 +257,7 @@ class SmallStep:
 		elif self.tree[1] == 'true':			
 			self.tree = self.tree[5]
 		else:
-			raise Exception("Mal Tipado")
+			raise Exception("Error")
 
 	def __efor1__(self):
 		newStep = SmallStep(self.tree[1])
@@ -271,7 +275,7 @@ class SmallStep:
 				self.tree[3] = [self.tree[3],'+','1']
 				self.tree = [copy.deepcopy(self.tree[5]),':',self.tree]
 		else:
-			raise Exception("Mal Tipado")
+			raise Exception("Error")
 	def __eassing3__(self):
 		newStep = SmallStep(self.tree[0])
 		newStep.makeStep()
@@ -311,8 +315,6 @@ class SmallStep:
                 self.__eop2__() 
                 pass
         def __ein3__(self):
-                print 'here'
-                print self.tree[0][5]
                 self.__replaceInTree__(self.tree[0][1],self.tree[2],self.tree[0][5])
                 self.tree = self.tree[0][5]
 	def __enotnot1__(self):
@@ -336,6 +338,8 @@ class SmallStep:
 				atree[loc] = copy.copy(element)
 		
 		pass
+        def __edeclaration__(self):
+                self.tree = self.tree[2]
 
 
 

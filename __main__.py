@@ -29,9 +29,7 @@ if __name__ == '__main__':
         program = f.read()
         program = programPreParsing(program)
         tree = TokenTree(program).tree
-        print 'foi montada a arvore:'
-        print tree
-        print '----------------'
+
         dic = {}
         dic['result'] = ['ref',['nat']]
         dic['quadrado'] = ['ref',[['nat'],'-->',['nat']]]
@@ -43,8 +41,18 @@ if __name__ == '__main__':
         dic['bool1'] = ['ref',['bool']]
         dic['bool2'] = ['ref',['bool']]
 
+        temptree = []
+        for x in range(len(dic.keys())):
+                temptree.append(dic.keys()[x])
+                temptree.append(dic.values()[x])
+        
+        tree = [temptree,'#',tree]
+        print 'foi montada a arvore:'
+        print tree
+        print '----------------'
+
         print 'tipo da funcao:'
-        final_type = TypeSystem(tree,dic).checkType()
+        final_type = TypeSystem(tree[2],dic).checkType()
         print final_type
 
         print '---------------'
@@ -59,7 +67,7 @@ if __name__ == '__main__':
 		print smallStep.tree
 		print 'memoria: ' + str(smallStep.memory)
 		raw_input(' ')
-		if type(smallStep.tree) == type(' '):
+		if type(smallStep.tree) == type(' ') or smallStep.tree[0] == 'if':
 			exit()
 
 
